@@ -18,20 +18,26 @@ class CoronaVirus:
         self.bs = BeautifulSoup(markup=self.response.text, features='html.parser')
         # print(self.bs)
 
-        # find_all extracts a list of Tag objects thaose match the given criteria...
+        # find_all extracts a list of Tag objects those match the given criteria...
         self.table = self.bs.find_all('table',{'id':'main_table_countries_today'})
         # print(self.table[0])
+        # finds first table(eqvalent to self.table)
         self.tr = self.table[0].find_all('tr')
         # print(self.tr[0].text)
+        # print(type(self.tr))
+        # self.tr is an object or an object or a list-object so .can be used only with hypertext but not with objects
+        # text is a hypertext parser
+
     def format_data(self,md):
         for td in self.tr:
-
+            # print(td) .text
             # strip([chars]) will strip characters from start and end of string...
             self.data_list.append(td.text.strip())
         # print(self.data_list)
         for x in self.data_list:
+            # print(x)
             # re.match matches substring with the string if it exists at the begining of the original string...
-            regex = re.match(md, x, re.IGNORECASE)
+            regex = re.search(md, x, re.IGNORECASE)
             # print(self.data_list)
             # print(regex)
             if regex:
@@ -40,12 +46,13 @@ class CoronaVirus:
                 self.k = self.k[0]+self.k[len(self.k)-1]
                 self.k=(self.k.split('\n'))
         # print(self.k)
-        # print(self.k[7])
+        # print(self.k[8])
         for i in self.k:
             if i is '':
                 self.epidermic_details.append('NA')
             else:
                 self.epidermic_details.append(i.strip())
+        # print(self.epidermic_details)
 
 
 md = input('Please enter a country: ')
